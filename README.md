@@ -1,4 +1,3 @@
-# Trio_opdracht
+# Trio_opdracht_Netflix_Statistics
 
-
-Testerino
+Netflix opdracht Programeren en Database periode 2.
