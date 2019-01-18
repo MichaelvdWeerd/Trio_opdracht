@@ -1,0 +1,153 @@
+USE master
+DROP DATABASE IF EXISTS Netflix;
+CREATE DATABASE Netflix;
+
+GO
+
+USE Netflix
+/* create table Account */
+CREATE TABLE Account (
+	login varchar(255) NOT NULL,
+	adres varchar(255) NOT NULL,
+	woonplaaats varchar(255) NOT NULL,
+	PRIMARY KEY (login));
+
+GO
+/* create table Profiel */
+CREATE TABLE Profiel (
+	naam varchar(255) NOT NULL,
+	leeftijd int NOT NULL,
+	bekekenProgrrammas varchar(255),
+	login varchar(255) NOT NULL,
+	PRIMARY KEY (naam, login),
+	FOREIGN KEY(login) REFERENCES Account(login)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE);
+
+GO
+/* create table Programma */
+CREATE TABLE Programma (
+	tijdsduur varchar(255) NOT NULL,
+	programmaID int NOT NULL,
+	CONSTRAINT programmaID_PK
+	PRIMARY KEY (programmaID));
+
+GO
+/* create table Film */
+CREATE TABLE Film(
+	genre varchar(255) NOT NULL,
+	taal varchar(255) NOT NULL,
+	leeftijdIndicatie int,
+	titel varchar(255) UNIQUE,
+	programmaID int NOT NULL,
+	filmID int,
+	CONSTRAINT filmID_PK
+	PRIMARY KEY (filmID),
+	/* Zorgt ervoor dat programmaID autoamatich veranderd als dit ook in de tabel Programma veranderd wordt */
+	CONSTRAINT programmaID_Film FOREIGN KEY (programmaID) REFERENCES Programma(programmaID)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE);
+
+
+GO
+/* create table Serie */
+CREATE TABLE Serie(
+	titel varchar(255) UNIQUE,
+	genre varchar(255) NOT NULL,
+	taal varchar(255) NOT NULL,
+	leeftijdIndicatie int,
+	programmaID int NOT NULL,
+	serieID int,
+	PRIMARY KEY (serieID),
+	/* Zorgt ervoor dat programmaID autoamatich veranderd als dit ook in de tabel Programma veranderd wordt */
+	CONSTRAINT programmaID_Serie FOREIGN KEY (programmaID) REFERENCES Programma(programmaID)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE);
+
+GO
+/* create table Aflevering */
+CREATE TABLE Aflevering(
+	volgNummer int NOT NULL,
+	titel varchar(255),
+	serieID int NOT NULL,
+	CONSTRAINT PK_Aflevering PRIMARY KEY (volgNummer,titel),
+	/* Zorgt ervoor dat de titel van de aflevering overeen komen met de titel in de tabel Serie */
+	CONSTRAINT titel_Aflevering FOREIGN KEY(titel) REFERENCES Serie(titel)
+	ON UPDATE NO ACTION
+	ON DELETE NO ACTION,
+	/* Zorgt ervoor dat de serieID van de aflevering overeen komt met die van de SerieID van de tabel Serie */
+	CONSTRAINT serieID_Aflevering FOREIGN KEY(serieID) REFERENCES Serie(serieID)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE);
+
+
+
+/* Alle vallues die ingevoerd worden in de database.*/
+
+INSERT INTO Account(login, adres, woonplaaats)
+VALUES ('michael', 'thatplace 22', 'Breda'),
+('another', 'thatotherplace 22', 'Breda');
+
+INSERT INTO Profiel(naam, leeftijd, login)
+VALUES ('michael', '20' ,'michael'),
+('mich', '20' ,'michael'),
+('michael', '20' ,'another');
+
+
+INSERT INTO Programma(tijdsduur, programmaID)
+VALUES ('120', 111),
+('126', 112),
+('120', 113),
+('25', 114),
+('20', 115),
+('20', 116),
+('30', 117);
+
+INSERT INTO Film(genre, taal, leeftijdIndicatie, titel, programmaID, filmID)
+VALUES ('Horror', 'Engels', 18, 'ScaryMovie', 111, 1),
+('Comedy', 'Engels', 3, 'Shrek', 112, 2),
+('Comedy', 'Engels', 3, 'Shrek 2', 113, 3);
+
+INSERT INTO Serie(titel, genre, taal, leeftijdIndicatie, programmaID, serieID)
+VALUES ('Twitch', 'Comedy', 'Nederlands', 3, 114, 1),
+('brown bunny', 'Comedy', 'Nederlands', 12, 115, 2),
+('James bond', 'Action', 'Nederlands', 18, 116, 3),
+('Paw patrol', 'Comedy', 'Nederlands', 3, 117, 4);
+
+INSERT INTO Aflevering(volgNummer, titel, serieID)
+VALUES (1,'Twitch',1),
+(2,'Twitch',1),
+(3,'Twitch',1),
+(4,'Twitch',1),
+(5,'Twitch',1),
+(1,'brown bunny',2),
+(2,'brown bunny',2),
+(3,'brown bunny',2),
+(4,'brown bunny',2),
+(5,'brown bunny',2),
+(6,'brown bunny',2),
+(7,'brown bunny',2),
+(8,'brown bunny',2),
+(9,'brown bunny',2),
+(10,'brown bunny',2),
+(1,'James bond',3),
+(2,'James bond',3),
+(3,'James bond',3),
+(4,'James bond',3),
+(5,'James bond',3),
+(1,'Paw patrol',4),
+(2,'Paw patrol',4),
+(3,'Paw patrol',4),
+(4,'Paw patrol',4),
+(5,'Paw patrol',4),
+(6,'Paw patrol',4),
+(7,'Paw patrol',4),
+(8,'Paw patrol',4),
+(9,'Paw patrol',4),
+(10,'Paw patrol',4),
+(11,'Paw patrol',4),
+(12,'Paw patrol',4),
+(13,'Paw patrol',4),
+(14,'Paw patrol',4),
+(15,'Paw patrol',4),
+(16,'Paw patrol',4);
