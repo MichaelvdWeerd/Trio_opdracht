@@ -9,6 +9,6 @@ public class Main {
 }
 
 // SQL snippet
-// String url = "jdbc:sqlserver://MYPC\\SQLEXPRESS;databaseName=Netflix;integratedSecurity=true";
+// String url = "jdbc:sqlserver://localhost\\SQLEXPRESS;databaseName=Netflix;integratedSecurity=true";
 //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 //Connection conn = DriverManager.getConnection(url);
